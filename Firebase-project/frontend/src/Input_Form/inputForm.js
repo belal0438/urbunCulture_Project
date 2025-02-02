@@ -1,18 +1,32 @@
 import React, { useState } from "react";
 import "./inputForm.css";
+import axios from "axios";
 
-const InputForm = () => {
+const InputForm = (props) => {
   const [name, setName] = useState("");
-  const [totalBookinAmount, setTotalBookinAmount] = useState("");
+  const [totalBookingAmount, settotalBookingAmount] = useState("");
 
-  const formHandler = (event) => {
-    event.preventDefault();
+  const formHandler = async (event) => {
+    try {
+      event.preventDefault();
 
-    let obj = {
-      name,
-      totalBookinAmount,
-    };
-    console.log(obj);
+      let obj = {
+        name,
+        totalBookingAmount,
+      };
+      // console.log(obj);
+      const result = await axios.post(
+        "http://localhost:5000/api/v1/add-booking",
+        obj
+      );
+
+      if (result.status == 201) {
+        // console.log("result>>", result);
+        props.getData(result.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -33,8 +47,8 @@ const InputForm = () => {
           <input
             type="Number"
             className="InputField"
-            value={totalBookinAmount}
-            onChange={(eve) => setTotalBookinAmount(eve.target.value)}
+            value={totalBookingAmount}
+            onChange={(eve) => settotalBookingAmount(eve.target.value)}
           />
         </div>
         <div className="divContainer">

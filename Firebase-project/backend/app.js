@@ -1,29 +1,18 @@
-const admin = require("firebase-admin");
+const express = require("express");
+const cors = require("cors");
+const app = express();
 
-// Initialize Firebase Admin SDK
-const serviceAccount = require("./serviceAccountKey.json");
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+app.use(express.json());
 
-const db = admin.firestore();
+const firbseRoute = require("./routes/firbase.route");
 
-async function fetchBookings() {
-  try {
-    const snapshot = await db.collection("bookings").get();
-    if (snapshot.empty) {
-      console.log("❌ No bookings found.");
-      return;
-    }
+app.use("/api/v1", firbseRoute);
 
-    snapshot.forEach((doc) => {
-      console.log(`✅ Booking ID: ${doc.id}`, doc.data());
-    });
-  } catch (error) {
-    console.error("🔥 Error fetching bookings:", error);
-  }
-}
-
-// Run the function
-fetchBookings();
+app.listen(5000, () => console.log("🔥 Server running on port 5000"));
