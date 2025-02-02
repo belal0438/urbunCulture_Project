@@ -1,0 +1,17 @@
+.conatainer {
+  display: grid;
+  gap: 5px;
+}
+
+.form {
+  width: auto;
+}
+
+.divContainer {
+  width: 100%;
+  margin: 5px;
+}
+
+.InputField {
+  margin-left: 5px;
+}
